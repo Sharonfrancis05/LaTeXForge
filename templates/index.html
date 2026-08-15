@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaTeX Studio — Professional Workspace</title>
+<meta name="description" content="A premium workspace for LaTeX document composition and compilation.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- CodeMirror -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+<!-- App styles -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" hidden>
+  <div class="spinner"></div>
+  <span class="loading-text" id="loading-message">Processing...</span>
+</div>
+
+<div class="app-container">
+  
+  <!-- ========== Top Navbar ========== -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <button class="icon-btn sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Sidebar">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="brand">
+        <div class="logo-mark">§</div>
+        <span class="logo-text">LaTeX Studio</span>
+      </div>
+    </div>
+    
+    <div class="nav-center">
+      <div class="document-title-wrap">
+        <i class="fa-solid fa-file-lines doc-icon"></i>
+        <input type="text" id="top-doc-title" class="doc-title-input" value="Untitled Document" placeholder="Document Name" aria-label="Document Name">
+        <div class="save-status">
+          <i class="fa-solid fa-cloud-check"></i> <span id="save-status-text">Saved locally</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="progress-indicator">
+        <span class="step active" data-step="1">Setup</span>
+        <i class="fa-solid fa-chevron-right step-sep"></i>
+        <span class="step" data-step="2">Build</span>
+        <i class="fa-solid fa-chevron-right step-sep"></i>
+        <span class="step" data-step="3">Compile</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    
+    <!-- ========== Sidebar ========== -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <button class="nav-item active" data-target="view-templates">
+            <i class="fa-solid fa-layer-group"></i> Templates
+          </button>
+          <button class="nav-item" data-target="view-setup" id="nav-setup" disabled>
+            <i class="fa-solid fa-sliders"></i> Document Setup
+          </button>
+          <button class="nav-item" data-target="view-builder" id="nav-builder" disabled>
+            <i class="fa-solid fa-pen-nib"></i> Section Builder
+          </button>
+          <button class="nav-item" data-target="view-compile" id="nav-compile" disabled>
+            <i class="fa-solid fa-book-open"></i> Full Document & PDF
+          </button>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Assets</div>
+          <button class="nav-item"><i class="fa-solid fa-image"></i> Figures (Coming Soon)</button>
+          <button class="nav-item"><i class="fa-solid fa-book"></i> Bibliography (Coming Soon)</button>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="section-count-badge">
+          <i class="fa-solid fa-puzzle-piece"></i>
+          <span id="section-count">0</span> Sections
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========== Main Workspace ========== -->
+    <main class="workspace">
+      
+      <!-- ── View: Templates ── -->
+      <section id="view-templates" class="view-panel active">
+        <div class="view-header">
+          <h2>Select a Template</h2>
+          <p>Choose a base structure to start building your LaTeX document.</p>
+        </div>
+        
+        <div class="template-grid">
+          <!-- Backend supported: Research -->
+          <div class="template-card" data-type="research">
+            <div class="card-icon"><i class="fa-solid fa-microscope"></i></div>
+            <h3>Research Paper</h3>
+            <p>Standard academic format with abstract, methodology, and citations.</p>
+            <div class="card-tags">
+              <span class="badge badge-cyan">Academic</span>
+            </div>
+          </div>
+          <!-- Backend supported: Resume -->
+          <div class="template-card" data-type="resume">
+            <div class="card-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Professional Résumé</h3>
+            <p>Clean, structured layout for work experience and skills.</p>
+            <div class="card-tags">
+              <span class="badge badge-violet">Career</span>
+            </div>
+          </div>
+          
+          <!-- UI mockups mapped to research -->
+          <div class="template-card" data-type="research">
+            <div class="card-icon"><i class="fa-solid fa-book-journal-whills"></i></div>
+            <h3>Thesis / Dissertation</h3>
+            <p>Comprehensive structure for extensive academic work.</p>
+            <div class="card-tags">
+              <span class="badge badge-cyan">Academic</span>
+            </div>
+          </div>
+          <div class="template-card" data-type="research">
+            <div class="card-icon"><i class="fa-solid fa-newspaper"></i></div>
+            <h3>IEEE Article</h3>
+            <p>Two-column layout conforming to standard IEEE guidelines.</p>
+            <div class="card-tags">
+              <span class="badge badge-cyan">Academic</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── View: Document Setup ── -->
+      <section id="view-setup" class="view-panel" hidden>
+        <div class="view-header">
+          <h2>Document Setup</h2>
+          <p>Configure the master details for your <span id="setup-type-label" style="color:var(--accent-cyan); font-weight:600;">document</span>.</p>
+        </div>
+        
+        <div class="setup-form-container glass-panel">
+          <!-- Research Fields -->
+          <div id="meta-research" class="meta-form">
+            <div class="form-row full">
+              <label class="field">
+                <span><i class="fa-solid fa-heading"></i> Paper Title</span>
+                <input type="text" id="meta-title" placeholder="e.g. Attention Is All You Need">
+              </label>
+            </div>
+            <div class="form-row">
+              <label class="field">
+                <span><i class="fa-solid fa-user-graduate"></i> Author</span>
+                <input type="text" id="meta-author" placeholder="Author Name">
+              </label>
+              <label class="field">
+                <span><i class="fa-solid fa-building-columns"></i> Institution</span>
+                <input type="text" id="meta-institution" placeholder="University / Lab">
+              </label>
+            </div>
+          </div>
+
+          <!-- Resume Fields -->
+          <div id="meta-resume" class="meta-form" hidden>
+            <div class="form-row full">
+              <label class="field">
+                <span><i class="fa-solid fa-user"></i> Full Name</span>
+                <input type="text" id="meta-name" placeholder="Your Name">
+              </label>
+            </div>
+            <div class="form-row">
+              <label class="field">
+                <span><i class="fa-solid fa-location-dot"></i> Location</span>
+                <input type="text" id="meta-location" placeholder="City, Country">
+              </label>
+              <label class="field">
+                <span><i class="fa-solid fa-envelope"></i> Email</span>
+                <input type="text" id="meta-email" placeholder="email@example.com">
+              </label>
+            </div>
+            <div class="form-row">
+              <label class="field">
+                <span><i class="fa-solid fa-phone"></i> Phone</span>
+                <input type="text" id="meta-phone" placeholder="+00 000 000 0000">
+              </label>
+              <label class="field">
+                <span><i class="fa-brands fa-linkedin"></i> LinkedIn</span>
+                <input type="text" id="meta-linkedin" placeholder="linkedin.com/in/you">
+              </label>
+            </div>
+          </div>
+          
+          <div class="setup-actions">
+            <button class="btn-primary" id="continue-builder-btn">Continue to Section Builder <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── View: Section Builder ── -->
+      <section id="view-builder" class="view-panel view-split" hidden>
+        
+        <!-- Left: Outline -->
+        <div class="builder-outline glass-panel">
+          <div class="panel-title">
+            <span><i class="fa-solid fa-list-ul"></i> Document Outline</span>
+          </div>
+          <ul id="section-list" class="section-list" role="list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+        
+        <!-- Right: Compose -->
+        <div class="builder-compose glass-panel">
+          <div class="panel-title">
+            <span><i class="fa-solid fa-pen-to-square"></i> Compose Section</span>
+          </div>
+          
+          <div class="compose-body">
+            <label class="field">
+              <span>Section Type</span>
+              <select id="section-select" aria-label="Section type"></select>
+            </label>
+            
+            <div class="field">
+              <div class="field-header">
+                <span>Content</span>
+                <div class="field-actions">
+                  <input type="file" id="file-upload" accept=".txt,.md" hidden>
+                  <button class="icon-btn-text" id="upload-btn" data-tooltip="Upload .txt or .md">
+                    <i class="fa-solid fa-upload"></i> Upload
+                  </button>
+                </div>
+              </div>
+              <div class="field-with-counter">
+                <textarea
+                  id="raw-content"
+                  placeholder="Draft your section content here..."
+                  aria-label="Raw content input"
+                  maxlength="10000"
+                ></textarea>
+                <span class="char-counter" id="char-counter">0 / 10000</span>
+              </div>
+            </div>
+            
+            <div class="compose-actions">
+              <button class="btn-primary btn-large" id="generate-btn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Generate LaTeX
+              </button>
+              <p class="status" id="generate-status" role="status"></p>
+            </div>
+            
+            <div class="snippet-preview" id="snippet-preview-container" hidden>
+               <div class="panel-title small">Generated LaTeX Code</div>
+               <div id="snippet-editor" class="code-box"></div>
+               <div class="snippet-actions">
+                 <button class="btn-secondary" id="add-section-btn"><i class="fa-solid fa-plus"></i> Add to Document Outline</button>
+               </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── View: Full Document & PDF ── -->
+      <section id="view-compile" class="view-panel view-split" hidden>
+        <!-- Left: Code Editor -->
+        <div class="compile-editor glass-panel">
+          <div class="panel-title">
+            <span><i class="fa-solid fa-code"></i> Master Document (LaTeX)</span>
+            <div class="panel-actions">
+              <button class="icon-btn" id="download-tex-btn" data-tooltip="Download .tex"><i class="fa-solid fa-download"></i></button>
+            </div>
+          </div>
+          <div id="master-editor" class="code-box full-height"></div>
+        </div>
+        
+        <!-- Right: PDF Preview & Logs -->
+        <div class="compile-preview glass-panel">
+          <div class="panel-title">
+            <span><i class="fa-solid fa-file-pdf"></i> PDF Preview</span>
+            <div class="panel-actions">
+              <button class="btn-primary btn-sm" id="compile-btn"><i class="fa-solid fa-play"></i> Compile</button>
+              <button class="icon-btn" id="preview-download-btn" disabled data-tooltip="Download PDF"><i class="fa-solid fa-download"></i></button>
+              <button class="icon-btn" id="preview-fullscreen-btn" disabled data-tooltip="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+            </div>
+          </div>
+          
+          <div class="preview-container">
+            <div id="preview-placeholder" class="preview-empty">
+              <i class="fa-regular fa-file-pdf"></i>
+              <p>Click <strong>Compile</strong> to build the PDF</p>
+            </div>
+            <iframe id="preview-frame" class="preview-frame" title="PDF preview" hidden></iframe>
+          </div>
+          
+          <pre id="compile-log" class="log-box" hidden></pre>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Data bridge from Flask -->
+<script>
+  window.RESEARCH_SECTIONS = {{ research_sections | tojson }};
+  window.RESUME_SECTIONS   = {{ resume_sections   | tojson }};
+</script>
+
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/stex/stex.min.js"></script>
+
+<!-- App script -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
