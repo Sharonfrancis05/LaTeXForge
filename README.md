@@ -1,79 +1,96 @@
-# LaTeXForge — Professional LaTeX Workspace
+<div align="center">
+  <h1>LaTeXForge</h1>
+  <p><strong>A Professional, Premium SaaS-Style LaTeX Document Workspace</strong></p>
+  <p>
+    <a href="#features">Features</a> • 
+    <a href="#quickstart">Quickstart</a> • 
+    <a href="#how-it-works">How it Works</a> • 
+    <a href="#tech-stack">Tech Stack</a>
+  </p>
+</div>
 
-A local web app that turns raw pasted text into LaTeX code, section by
-section (abstract, introduction, methodology, resume experience, skills,
-etc.), lets you edit it, assembles a full `.tex` document, and can compile
-it straight to a downloadable PDF.
+<br>
 
-## Features
+**LaTeXForge** is a modern, locally-hosted web application designed to make LaTeX document creation as seamless and visually stunning as possible. It takes the pain out of managing LaTeX syntax by providing a sleek, interactive Section Builder that automatically formats your raw text into beautifully structured `.tex` documents, and compiles them directly into PDFs.
 
-- **Two document types**: Research Paper and Résumé, each with its own
-  section list and LaTeX preamble/document class.
-- **Two generation modes**:
-  - *Template mode* (default, no API key needed): rule-based conversion —
-    escapes special characters, turns bullet lines into `itemize`, wraps
-    content in the right section command.
-  - *AI polish mode*: sends your text to the Anthropic API (Claude) with
-    your own API key to produce more naturally structured LaTeX. The key
-    is used only for that one request and is never stored on disk.
-- **In-browser code editors** (CodeMirror, LaTeX syntax highlighting) for
-  both the individual section snippet and the full assembled document —
-  everything is editable before you download or compile.
-- **Document outline** — add/remove sections, see them listed in order.
-- **Download `.tex`** at any time.
-- **Compile → PDF** using a local `pdflatex`, with the compiler log shown
-  if something fails.
+> *Note: Add a screenshot of the new beautiful dark-mode workspace here!*
+> `![LaTeXForge Workspace](path/to/screenshot.png)`
 
-## Requirements
+---
 
-- Python 3.9+
-- Flask (`pip install -r requirements.txt`)
-- A TeX distribution with `pdflatex` on your PATH, for the "Compile → PDF"
-  button (e.g. TeX Live / MacTeX / MiKTeX). Without it, you can still
-  generate, edit, and download the `.tex` source — you'd just compile it
-  yourself in Overleaf or a local LaTeX editor instead.
+## ✨ Features
 
-## Running it
+- 🎨 **Premium UI/UX:** A stunning dark-mode interface with glassmorphism panels, fluid transitions, and a modern side-nav layout inspired by top-tier SaaS products.
+- 🚀 **Zero-Install Compilation:** Don't have `pdflatex` installed on your machine? No problem. LaTeXForge automatically falls back to a lightning-fast online compiler (`latex.ytotech.com`) so you can generate PDFs instantly out of the box.
+- 📝 **Interactive Section Builder:** Build documents piece-by-piece. Add, reorder, or delete sections dynamically from your document outline.
+- 🛠️ **Smart Templates:** Built-in boilerplate support for **Research Papers** (with titles, authors, and institutions) and **Professional Résumés** (with contact headers).
+- 💻 **Professional Code Editors:** Fully integrated with `CodeMirror` featuring the Dracula theme and LaTeX syntax highlighting for both individual snippets and the master document.
+- ⚡ **Real-Time Assembly:** The master `.tex` document updates automatically as you draft new sections or edit your metadata.
+
+---
+
+## 🚀 Quickstart
+
+You only need Python installed to get started.
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/Sharonfrancis05/LaTeXForge.git
+cd LaTeXForge
+
+# 2. Install dependencies (Flask & Requests)
 pip install -r requirements.txt
-python3 app.py
+
+# 3. Run the application
+python app.py
 ```
 
-Then open **http://127.0.0.1:5000** in your browser.
+Then, open your browser and navigate to **[http://127.0.0.1:5000](http://127.0.0.1:5000)**.
 
-## How it works
+---
 
-1. Pick a **document type** and **section**, paste (or upload a `.txt`)
-   the raw content for that section.
-2. Optionally turn on **AI polish** and paste an Anthropic API key.
-3. Click **Generate LaTeX** — review/edit the snippet, then
-   **+ Add to Document**.
-4. Repeat for each section. The full document (with the right preamble
-   for the chosen document type) rebuilds automatically on the right.
-5. **Download .tex** any time, or click **Compile → PDF** to get a
-   ready-to-use PDF.
+## 📖 How it Works
 
-## Project layout
+The workspace is divided into an intuitive, guided workflow:
 
-```
-latex_studio/
-├── app.py                  # Flask routes: generate / assemble / compile
-├── section_templates.py    # rule-based LaTeX generation + preambles
-├── requirements.txt
-├── templates/
-│   └── index.html
+1. **Templates:** Choose a base document structure (e.g., Research Paper or Résumé).
+2. **Document Setup:** Fill out the required metadata for your chosen template (e.g., Paper Title, Author Name, Email).
+3. **Section Builder:** 
+    * Select a section type (Abstract, Introduction, Experience, etc.).
+    * Paste or upload your raw text content.
+    * Click **Generate LaTeX** — the app will automatically escape characters, format bullet points into `\begin{itemize}`, and apply proper section headers.
+    * Click **+ Add to Document** to append it to your interactive outline.
+4. **Full Document & PDF:** Review the auto-assembled master code. Click **Compile** to render the PDF directly in your browser. Download the `.tex` source or the final `.pdf` with a single click.
+
+---
+
+## 📂 Project Structure
+
+```text
+LaTeXForge/
+├── app.py                  # Flask backend: routing, online/local compiler fallback logic
+├── section_templates.py    # LaTeX template strings and rule-based formatting logic
+├── requirements.txt        # Python dependencies
+├── generated/              # Temporary folder for local PDF generation
 ├── static/
-│   ├── style.css
-│   └── script.js
-└── generated/               # compiled PDFs land here temporarily
+│   ├── style.css           # Premium dark theme and grid/flex layout styles
+│   └── script.js           # View routing, DOM interactions, and API communication
+└── templates/
+    └── index.html          # Main application shell (Navbar, Sidebar, Workspaces)
 ```
 
-## Extending it
+---
 
-- Add more sections by editing `RESEARCH_SECTIONS` / `RESUME_SECTIONS` in
-  `section_templates.py`.
-- Add a new document type (e.g. a cover letter) by adding a new preamble
-  pair (`*_PREAMBLE` / `*_CLOSING`) and wiring it into `DOC_TYPE_SECTIONS`,
-  `get_preamble`, and `get_closing`.
-- Swap the AI model by changing `ANTHROPIC_MODEL` in `app.py`.
+## 🛠️ Tech Stack
+
+- **Backend:** Python, Flask, Requests
+- **Frontend:** Vanilla HTML5, CSS3 (CSS Variables, Flexbox, Grid), Vanilla JavaScript (No frameworks)
+- **Editor Integration:** CodeMirror 5 (with `stex` syntax mode)
+- **Icons & Fonts:** Font Awesome, Google Fonts (Outfit, Inter, IBM Plex Mono)
+- **Compilation Engine:** Local `pdflatex` (MiKTeX/TeX Live) with automatic failover to the `YtoTech` REST API.
+
+---
+
+<div align="center">
+  <p>Built with ❤️ for a better LaTeX experience.</p>
+</div>
