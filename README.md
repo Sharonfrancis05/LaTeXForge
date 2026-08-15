@@ -1,4 +1,4 @@
-# Typeset — LaTeX Section Generator & Editor
+# LaTeXForge — Professional LaTeX Workspace
 
 A local web app that turns raw pasted text into LaTeX code, section by
 section (abstract, introduction, methodology, resume experience, skills,

@@ -1,5 +1,5 @@
 /* =====================================================
-   LaTeX Studio — Frontend Script
+   LaTeXForge — Frontend Script
    Preserving all original API calls, adding new View routing
    ===================================================== */
 
@@ -529,5 +529,5 @@ previewFullscreenBtn.addEventListener('click', () => {
 
 // Update top doc title dynamically
 topDocTitle.addEventListener('input', () => {
-  document.title = `${topDocTitle.value || 'Untitled'} - LaTeX Studio`;
+  document.title = `${topDocTitle.value || 'Untitled'} - LaTeXForge`;
 });
